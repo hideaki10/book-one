@@ -11,7 +11,7 @@ func main() {
 	var index int
 
 	for k, v := range data {
-		if v == 16 {
+		if v == 17 {
 			index = k
 			break
 		}

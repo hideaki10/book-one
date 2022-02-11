@@ -1,6 +1,7 @@
 package main
 
 import (
+	//. "bookstore/method/embedded"
 	"fmt"
 	"reflect"
 )
@@ -56,15 +57,15 @@ import (
 // 	t.a = 11
 // }
 
-type T struct{}
+// type T struct{}
 
-func (T) M1() {}
-func (T) M2() {}
+// func (T) M1() {}
+// func (T) M2() {}
 
-type S = T
+// type S = T
 
-func (*T) M3() {}
-func (*T) M4() {}
+// func (*T) M3() {}
+// func (*T) M4() {}
 
 func dumpMethodSet(i interface{}) {
 	dynTyp := reflect.TypeOf(i)
@@ -77,17 +78,64 @@ func dumpMethodSet(i interface{}) {
 	n := dynTyp.NumMethod()
 	if n == 0 {
 		fmt.Printf("%s's method set is empty", dynTyp.Name())
+		fmt.Printf("\n")
 		return
 	}
 
 	fmt.Printf("%s's method set:", dynTyp)
+	fmt.Printf("\n")
 	for j := 0; j < n; j++ {
 		fmt.Println("-", dynTyp.Method(j).Name)
 	}
 	fmt.Printf("\n")
 }
 
+type W struct {
+}
+
+func (w W) M1()  {}
+func (w *W) M2() {}
+
+type W1 W
+
+type U1 int
+type U2 struct {
+	n int
+	m int
+}
+
+type U3 interface {
+	M1()
+}
+
+type S1 struct {
+	U1
+	*U2
+	U3
+	a int
+	b string
+}
+
+type S2 struct {
+	u1 U1
+	u2 *U2
+	u3 U3
+	a  int
+	b  string
+}
+
 func main() {
+
+	// var w W
+	// var pw *W
+	// var wl W1
+	// var pwl *W1
+
+	// dumpMethodSet(w)
+	// dumpMethodSet(wl)
+	// dumpMethodSet(pw)
+	// dumpMethodSet(pwl)
+
 	// var t T
 	// println(t.a)
 
@@ -104,8 +152,29 @@ func main() {
 
 	//var t T
 
-	var s S
+	// var s S
 
-	dumpMethodSet(s)
-	dumpMethodSet(&s)
+	// dumpMethodSet(s)
+	// dumpMethodSet(&s)
+
+	// m := MyInt(17)
+	// r := strings.NewReader("hello,go")
+	// s := S{
+	// 	MyInt:  &m,
+	// 	T:      T{A: 1, B: 2},
+	// 	Reader: r,
+	// 	S:      "demo",
+	// 	N:      1,
+	// }
+
+	// var sl = make([]byte, len("hello,go"))
+	// s.Reader.Read(sl)
+	// fmt.Println(string(sl))
+	// s.MyInt.Add(5)
+	// fmt.Println(*(s.MyInt))
+
+	var s1 S1
+	var s2 S2
+	dumpMethodSet(s1)
+	dumpMethodSet(s2)
 }

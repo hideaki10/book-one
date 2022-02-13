@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"runtime"
 	"strconv"
+	"sync"
 )
 
 var goroutineSpace = []byte("goroutine ")
+var mu sync.Mutex
+var m = make(map[uint64]int)
 
 func CurGoroutineID() uint64 {
 
@@ -40,9 +43,25 @@ func Trace() func() {
 	name := fn.Name()
 
 	gid := CurGoroutineID()
-	fmt.Printf("g[%05d]: enter: [%s]\n", gid, name)
 
+	mu.Lock()
+	indents := m[gid]
+	m[gid] = indents + 1
+	mu.Unlock()
+	printTrace(gid, name, "->", indents+1)
 	return func() {
-		fmt.Printf("g[%05d]: exit: [%s]\n", gid, name)
+		mu.Lock()
+		indents = m[gid]
+		m[gid] = indents - 1
+		mu.Unlock()
+		printTrace(gid, name, "<-", indents)
 	}
+}
+
+func printTrace(id uint64, name, arrow string, indent int) {
+	indents := ""
+	for i := 0; i < indent; i++ {
+		indents += "   "
+	}
+	fmt.Printf("g[%05d]:%s%s%s\n", id, indents, arrow, name)
 }

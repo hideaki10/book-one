@@ -1,13 +1,13 @@
 package main
 
-import (
-	"errors"
-	"fmt"
-)
+// import (
+// 	"errors"
+// 	"fmt"
+// )
 
-func main() {
-	err := errors.New("dasdasd")
+// func main() {
+// 	err := errors.New("dasdasd")
 
-	res := fmt.Errorf("dsadas", err)
+// 	res := fmt.Errorf("dsadas", err)
 
-}
+// }

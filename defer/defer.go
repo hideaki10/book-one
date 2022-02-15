@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bookstore/defer/trace"
+	"bookstore/instrument_trace/trace"
 	"sync"
 )
 

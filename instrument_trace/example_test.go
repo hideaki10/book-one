@@ -1,4 +1,6 @@
-package trace_test
+package instrument_trace_test
+
+import "instrument_trace/trace"
 
 func a() {
 	defer trace.Trace()()
@@ -22,12 +24,12 @@ func d() {
 func ExampleTrace() {
 	a()
 	// Output:
-	// enter: a
-	// enter: b
-	// enter: c
-	// enter: d
-	// exit: d
-	// exit: c
-	// exit: b
-	// exit: a
+	// g[00001]:   ->instrument_trace_test.a
+	// g[00001]:      ->instrument_trace_test.b
+	// g[00001]:         ->instrument_trace_test.c
+	// g[00001]:            ->instrument_trace_test.d
+	// g[00001]:            <-instrument_trace_test.d
+	// g[00001]:         <-instrument_trace_test.c
+	// g[00001]:      <-instrument_trace_test.b
+	// g[00001]:   <-instrument_trace_test.a
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"errors"
 	"fmt"
+	"runtime"
 	"time"
 )
 
@@ -16,21 +16,37 @@ import (
 // c := srv.newConn(rw)
 // go c.serve(connCtx)
 
-func spawn(f func() error) <-chan error {
-	c := make(chan error)
+// func spawn(f func() error) <-chan error {
+// 	c := make(chan error)
 
-	go func() {
-		c <- f()
-	}()
+// 	go func() {
+// 		c <- f()
+// 	}()
 
-	return c
+// 	return c
 
+// }
+
+// func main() {
+// 	c := spawn(func() error {
+// 		time.Sleep(2 * time.Second)
+// 		return errors.New("timeout")
+// 	})
+// 	fmt.Println(<-c)
+// }
+
+func deadloop() {
+	for {
+	}
 }
 
 func main() {
-	c := spawn(func() error {
-		time.Sleep(2 * time.Second)
-		return errors.New("timeout")
-	})
-	fmt.Println(<-c)
+	runtime.GOMAXPROCS(1)
+	go deadloop()
+	for {
+		time.Sleep(time.Second * 1)
+		fmt.Println("I got scheduled!")
+	}
 }
+
+var sequence int
